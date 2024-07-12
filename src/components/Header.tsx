@@ -12,7 +12,8 @@ const Header = () => {
         <Logo/>
         <div>
           {auth?.isLoggedIn ? <>
-          <NavigationLink   to="/"  text="Logout" onClick={auth?.logout}>
+          <NavigationLink to="/chat" text="Go To Chat"/>
+          <NavigationLink to="/" text="Logout" onClick={auth?.logout}>
           </NavigationLink>
           </> : <>
           <NavigationLink   to="/login"  text="Login" >
