@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;800&family=Work+Sans&display=swap");
+@font-face{
+  font-family: "Montserrat";
+  src: url("/fonts/Montserrat-Regular.ttf");
+}
+
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #222222;
+  color: #F7F7F7;
+  font-family: Roboto Slab , "Montserrat" , serif;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.image-inverted {
+  filter: invert(100%);
+}
+
+.navlink {
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding: 8px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  letter-spacing: 1px;
+  background-color: #E1E1E1; 
+  color: #3B3B3B;
+  transition: all 0.5s ease;
+}
+
+.navlink:hover {
+  background-color: #3B3B3B; 
+  color: #E1E1E1; 
+}
+
+
+.MuiOutlinedInput-input-root.Mui-focused,
+.MuiOutlinedInput-notchedOutline {
+  border-color: white !important;
+}
+
+.rotate {
+  animation: rotation 8s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #F7F7F7 !important;
+}
+
+code.language-javascript span{
+  white-space: pre-wrap; 
+  word-break: break-word; 
+  text-wrap: wrap !important;
+}
+
+pre.syntax-highlighter{
+  background-color: #3B3B3B!important;
+  color: #F7F7F7!important;
+}
+
+.notfound{
+  align-content: center;
+  text-align: center;
+  font-size: 8rem;
+  height: 80vh;
+  background: linear-gradient(to right ,rgb(160, 160, 184) ,rgb(49, 34, 5));
+  background-clip: text;
+  color: transparent;
+}
