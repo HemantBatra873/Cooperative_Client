@@ -26,6 +26,27 @@ function isCodeBlock(str: string) {
   return false;
 }
 
+function formatResponse(response: string): string {
+  // Split response by newline indicators and format them appropriately
+  const formattedResponse = response
+    .split('\n')
+    .map((line) => {
+      // Handle bold text formatting
+      line = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+      // Handle list items
+      if (line.trim().startsWith('*')) {
+        return `<li>${line.trim().substring(1).trim()}</li>`;
+      }
+
+      // Handle normal paragraphs
+      return `<p>${line.trim()}</p>`;
+    })
+    .join('');
+
+  return formattedResponse;
+}
+
 
 const ChatItem = ({
   content,
@@ -54,7 +75,7 @@ const ChatItem = ({
         <img src="/logo.svg" alt="ai" width={isMobile? 20 : 40} />
       <Box textOverflow={"wrap"}>
         {!messageBlocks && (
-          <Typography sx={{ fontSize: isMobile? "15px":"20px" }}>{content}</Typography>
+          <Typography sx={{ fontSize: isMobile? "15px":"20px" }}>{formatResponse(content)}</Typography>
         )}
         {messageBlocks &&
           messageBlocks.length &&
@@ -89,7 +110,7 @@ const ChatItem = ({
       </Avatar>
       <Box>
         {!messageBlocks && (
-          <Typography sx={{ fontSize: isMobile? "15px":"20px" }}>{content}</Typography>
+          <Typography sx={{ fontSize: isMobile? "15px":"20px" }}>{formatResponse(content)}</Typography>
         )}
         {messageBlocks &&
           messageBlocks.length &&

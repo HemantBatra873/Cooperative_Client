@@ -109,8 +109,7 @@ const Chat = () => {
             You are talking to a ChatBOT
           </Typography>
           <Typography sx={{ mx: "auto", fontFamily: "work sans", my: 4, p: 3 }}>
-            I have a limited numbers of tokens for this model . You may receive the message that the 
-            tokens have expired .
+            This is a mern stack AI saas application project built with google gemini pro.
           </Typography>
           <Button
             onClick={handleDeleteChats}
