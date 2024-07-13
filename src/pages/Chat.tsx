@@ -1,5 +1,5 @@
 import  { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Box, Avatar, Typography, Button, IconButton } from "@mui/material";
+import { Box, Avatar, Typography, Button, IconButton , useMediaQuery , useTheme, Theme} from "@mui/material";
 import ChatItem from "../components/chat/ChatItem";
 import { IoMdSend } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,8 @@ type Message = {
   content: string;
 };
 const Chat = () => {
+  const theme: Theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const auth = useAuth();
@@ -137,7 +139,7 @@ const Chat = () => {
           display: "flex",
           flex: { md: 0.8, xs: 1, sm: 1 },
           flexDirection: "column",
-          px: 3,
+          px: isMobile? 1 : 3,
         }}
       >
 

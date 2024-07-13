@@ -12,7 +12,7 @@ const Header = () => {
         <Logo/>
         <div>
           {auth?.isLoggedIn ? <>
-          <NavigationLink to="/chat" text="Go To Chat"/>
+          <NavigationLink to="/chat" text="Chat"/>
           <NavigationLink to="/" text="Logout" onClick={auth?.logout}>
           </NavigationLink>
           </> : <>

@@ -17,7 +17,7 @@ const TypingAnim = () => {
       ]}
       speed={50}
       style={{
-        fontSize:isMobile ? "40px" : "60px",
+        fontSize:isMobile ? "30px" : "60px",
         color: "white",
         display: "flex",
         alignItems:"center",

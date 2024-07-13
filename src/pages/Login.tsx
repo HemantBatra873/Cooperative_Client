@@ -1,12 +1,21 @@
 import React, { useEffect } from "react";
 import { IoIosLogIn } from "react-icons/io";
-import { Box, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  useMediaQuery,
+  useTheme,
+  Theme,
+} from "@mui/material";
 import CustomizedInput from "../components/shared/CustomizedInput";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const Login = () => {
+  const theme: Theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
   const auth = useAuth();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,7 +39,13 @@ const Login = () => {
   }, [auth]);
 
   return (
-    <Box width={"100%"} height={"80vh"} display="flex"  justifyContent={"center"} alignItems={"center"}>
+    <Box
+      width={ "100%" }
+      height={"80vh"}
+      display="flex"
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
       <Box
         display={"flex"}
         justifyContent={"center"}
@@ -45,7 +60,7 @@ const Login = () => {
             boxShadow: "3px 3px 6px #000",
             borderRadius: "10px",
             border: "none",
-            background:"#3B3B3B"
+            background: "#3B3B3B",
           }}
         >
           <Box
@@ -53,6 +68,7 @@ const Login = () => {
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
+              alignItems:"center",
             }}
           >
             <Typography
@@ -69,18 +85,18 @@ const Login = () => {
               type="submit"
               sx={{
                 px: 2,
-                fontSize:18,
+                fontSize: 18,
                 py: 1,
                 mt: 2,
-                width: "400px",
+                width: isMobile?"250px" : "400px",
                 borderRadius: 2,
                 bgcolor: "#E1E1E1",
-                color:"#3B3B3B",
-                transition:"all 0.5s ease",
+                color: "#3B3B3B",
+                transition: "all 0.5s ease",
                 ":hover": {
                   bgcolor: "#3B3B3B",
                   color: "#E1E1E1",
-                  border:"1px solid #F7F7F7"
+                  border: "1px solid #F7F7F7",
                 },
               }}
               endIcon={<IoIosLogIn />}

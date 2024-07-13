@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { IoIosLogIn } from "react-icons/io";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button ,useMediaQuery , useTheme, Theme} from "@mui/material";
 import CustomizedInput from "../components/shared/CustomizedInput";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 const Signup = () => {
+  const theme: Theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
   const auth = useAuth();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,7 +27,7 @@ const Signup = () => {
   };
   useEffect(() => {
     if (auth?.user) {
-      return navigate("/chat");
+      return navigate("/chat");   
     }
   }, [auth]);
   return (
@@ -72,7 +74,7 @@ const Signup = () => {
                 fontSize:18,
                 py: 1,
                 mt: 2,
-                width: "400px",
+                width: isMobile? "250px" : " 400px",
                 borderRadius: 2,
                 bgcolor: "#E1E1E1",
                 color:"#3B3B3B",
