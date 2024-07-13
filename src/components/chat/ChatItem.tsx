@@ -75,7 +75,9 @@ const ChatItem = ({
         <img src="/logo.svg" alt="ai" width={isMobile? 20 : 40} />
       <Box textOverflow={"wrap"}>
         {!messageBlocks && (
-          <Typography sx={{ fontSize: isMobile? "15px":"20px" }}>{formatResponse(content)}</Typography>
+          <Typography component="div" sx={{ fontSize: isMobile ? '15px' : '20px' }}>
+          <div dangerouslySetInnerHTML={{ __html: formatResponse(content) }} />
+          </Typography>
         )}
         {messageBlocks &&
           messageBlocks.length &&
