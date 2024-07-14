@@ -8,11 +8,11 @@ const TypingAnim = () => {
     <TypeAnimation
       sequence={[
         // Same substring at the start will only be typed once, initially
-        "Chat With Your OWN AI",
+        "Chat With AgraserAI",
         1000,
         "Built With Gemini Pro",
         1000,
-        "Your fulltime assistant",
+        "fulltime assistannce",
         1000,
       ]}
       speed={50}
