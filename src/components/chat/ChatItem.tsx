@@ -112,7 +112,7 @@ const ChatItem = ({
       </Avatar>
       <Box>
         {!messageBlocks && (
-          <Typography sx={{ fontSize: isMobile? "15px":"20px" }}>{formatResponse(content)}</Typography>
+          <Typography sx={{ fontSize: isMobile? "15px":"20px" }}>{content}</Typography>
         )}
         {messageBlocks &&
           messageBlocks.length &&
