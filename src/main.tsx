@@ -11,7 +11,7 @@ axios.defaults.baseURL = "https://agraser-backend.vercel.app/api/v1/";
 axios.defaults.withCredentials = true;
 const theme = createTheme({
   typography: {
-    fontFamily: "Roboto Slab,serif",
+    fontFamily: "PT Sans , Roboto Slab , serif",
     allVariants: { color: "white" },
   },
 });

@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { IoIosLogIn } from "react-icons/io";
-import { Box, Typography, Button ,useMediaQuery , useTheme, Theme} from "@mui/material";
+import { Box, Typography, Button, useMediaQuery, useTheme, Theme } from "@mui/material";
 import CustomizedInput from "../components/shared/CustomizedInput";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import Header from "../components/Header";
+import video from '/video.mp4';
 const Signup = () => {
   const theme: Theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -27,73 +29,117 @@ const Signup = () => {
   };
   useEffect(() => {
     if (auth?.user) {
-      return navigate("/chat");   
+      return navigate("/chat");
     }
   }, [auth]);
   return (
-    <Box width={"100%"} height={"80vh"} display="flex" alignItems={"center"} justifyContent={"center"}>
+    <Box sx={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
+      {/* Background Video */}
+      <video
+        src={video}
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          filter: "grayscale(100%) brightness(0.6) contrast(1.9) saturate(1.9)",
+          zIndex: 0, // Push it behind content
+        }}
+      />
+      <Header />
+      {/* Other Content on top of video */}
       <Box
-        display={"flex"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        padding={2}
+        sx={{
+          position: "relative",
+          bgcolor: 'transparent',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+        }}
       >
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            margin: "auto",
-            padding: "30px",
-            boxShadow: "10px 10px 20px #000",
-            borderRadius: "10px",
-            border: "none",
-            background:"#3B3B3B"
+
+        <Box
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          padding={2}
+          marginBottom={12}
+          sx={{
+            background: "rgba(255, 255, 255, 0.05)", // Transparent white background
+            backdropFilter: "blur(7px) saturate(180%)", // Blur + color enhancement
+            WebkitBackdropFilter: "blur(7px) saturate(180%)", // Safari support
+            borderRadius: "16px", // Soft rounded edges
+            border: "1px solid rgba(255, 255, 255, 0.2)", // Light border for depth
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              margin: "auto",
+              padding: "30px",
+              borderRadius: "10px",
             }}
           >
-            <Typography
-              variant="h4"
-              textAlign="center"
-              padding={2}
-              fontWeight={600}
-            >
-              Signup
-            </Typography>
-            <CustomizedInput type="text" name="name" label="Name" />
-            <CustomizedInput type="email" name="email" label="Email" />
-            <CustomizedInput type="password" name="password" label="Password" />
-            <Button
-              type="submit"
+            <Box
               sx={{
-                px: 2,
-                fontSize:18,
-                py: 1,
-                mt: 2,
-                width: isMobile? "250px" : " 400px",
-                borderRadius: 2,
-                bgcolor: "#E1E1E1",
-                color:"#3B3B3B",
-                transition:"all 0.5s ease",
-                ":hover": {
-                  bgcolor: "#3B3B3B",
-                  color: "#E1E1E1",
-                  border:"1px solid #F7F7F7"
-                },
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
               }}
-              endIcon={<IoIosLogIn />}
             >
-              Signup
-            </Button>
-          </Box>
-        </form>
+              <Typography
+                variant="h4"
+                textAlign="center"
+                padding={2}
+                paddingTop={0}
+                fontWeight={600}
+              >
+                Signup
+              </Typography>
+              <CustomizedInput type="text" name="name" label="Name" />
+              <CustomizedInput type="email" name="email" label="Email" />
+              <CustomizedInput type="password" name="password" label="Password" />
+              <Button
+                type="submit"
+                sx={{
+                  px: 2,
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  py: 1,
+                  mt: 2,
+                  width: isMobile ? "250px" : " 400px",
+                  borderRadius: 2,
+                  border: "1px solid transparent",
+                  bgcolor: "#E1E1E1",
+                  color: "#3B3B3B",
+                  transition: "all 0.5s ease",
+                  ":hover": {
+                    bgcolor: "transparent",
+                    color: "#E1E1E1",
+                    border: "1px solid #F7F7F7"
+                  },
+                }}
+                endIcon={<IoIosLogIn />}
+              >
+                Signup
+              </Button>
+            </Box>
+          </form>
+        </Box>
       </Box>
     </Box>
   );
 };
 
 export default Signup;
+

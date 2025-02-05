@@ -1,16 +1,19 @@
-import { Typography } from '@mui/material'
-
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Link } from 'react-router-dom';
 
 const Logo = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Check if it's a mobile screen
+
+  const logoSrc = '/logow.svg'; // Choose the correct logo source
+  const logoWidth = isMobile ? 150 : 200; // Adjust width for mobile if needed
+
   return (
-    <div style={{display:"flex" , marginRight:"auto" , alignItems:"center" , gap:"4px"}}>
-        <img src='/logo.svg' alt='logo' width={40}  style={{marginTop: "5px"}}/>
-        <Typography sx={{display : {md : "block" , sm : "block" , xs : "none"},
-           mr:"auto" ,fontWeight:"400" , textShadow:"2px 2px 20px #000" , }}>
-            <span style={{fontSize:"35px"}}>Agraser</span>
-        </Typography>
-    </div>
-  )
+    <Link to={'/'} style={{ display: "flex", marginRight: "auto", alignItems: "center", gap: "4px" }}>
+      <img src={logoSrc} alt='logo' width={logoWidth} style={{ marginTop: "5px" }} />
+    </Link>
+  );
 }
 
-export default Logo
+export default Logo;

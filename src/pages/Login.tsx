@@ -12,6 +12,8 @@ import CustomizedInput from "../components/shared/CustomizedInput";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import Header from "../components/Header";
+import video from '/video.mp4';
 
 const Login = () => {
   const theme: Theme = useTheme();
@@ -39,74 +41,113 @@ const Login = () => {
   }, [auth]);
 
   return (
-    <Box
-      width={ "100%" }
-      height={"80vh"}
-      display="flex"
-      justifyContent={"center"}
-      alignItems={"center"}
-    >
-      <Box
-        display={"flex"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        padding={2}
-      >
-        <form
-          onSubmit={handleSubmit}
+    <>
+      <Box sx={{ position: "relative", width: "100vw", height: "100vh", overflow: "hidden" }}>
+        {/* Background Video */}
+        <video
+          src={video}
+          autoPlay
+          loop
+          muted
+          playsInline
           style={{
-            margin: "auto",
-            padding: "30px",
-            boxShadow: "3px 3px 6px #000",
-            borderRadius: "10px",
-            border: "none",
-            background: "#3B3B3B",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            filter: "grayscale(100%) brightness(0.6) contrast(1.9) saturate(1.9)",
+            zIndex: 0, // Push it behind content
+          }}
+        />
+        <Header />
+        {/* Other Content on top of video */}
+        <Box
+          sx={{
+            position: "relative",
+            bgcolor: 'transparent',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+            height: "100%"
           }}
         >
+
           <Box
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            padding={2}
+            marginBottom={12}
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems:"center",
+              background: "rgba(255, 255, 255, 0.05)", // Transparent white background
+              backdropFilter: "blur(7px) saturate(180%)", // Blur + color enhancement
+              WebkitBackdropFilter: "blur(7px) saturate(180%)", // Safari support
+              borderRadius: "16px", // Soft rounded edges
+              border: "1px solid rgba(255, 255, 255, 0.2)", // Light border for depth
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
             }}
           >
-            <Typography
-              variant="h4"
-              textAlign="center"
-              padding={2}
-              fontWeight={600}
-            >
-              Login
-            </Typography>
-            <CustomizedInput type="email" name="email" label="Email" />
-            <CustomizedInput type="password" name="password" label="Password" />
-            <Button
-              type="submit"
-              sx={{
-                px: 2,
-                fontSize: 18,
-                py: 1,
-                mt: 2,
-                width: isMobile?"250px" : "400px",
-                borderRadius: 2,
-                bgcolor: "#E1E1E1",
-                color: "#3B3B3B",
-                transition: "all 0.5s ease",
-                ":hover": {
-                  bgcolor: "#3B3B3B",
-                  color: "#E1E1E1",
-                  border: "1px solid #F7F7F7",
-                },
+            <form
+              onSubmit={handleSubmit}
+              style={{
+                margin: "auto",
+                padding: "30px",
+                borderRadius: "10px",
               }}
-              endIcon={<IoIosLogIn />}
             >
-              Login
-            </Button>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  textAlign="center"
+                  padding={2}
+                  paddingTop={0}
+                  fontWeight={600}
+                >
+                  Login
+                </Typography>
+                <CustomizedInput type="email" name="email" label="Email" />
+                <CustomizedInput type="password" name="password" label="Password" />
+                <Button
+                  type="submit"
+                  sx={{
+                    px: 2,
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                    py: 1,
+                    mt: 2,
+                    width: isMobile ? "250px" : "400px",
+                    borderRadius: 2,
+                    bgcolor: "#E1E1E1",
+                    border: "1px solid transparent",
+                    color: "#3B3B3B",
+                    transition: "all 0.5s ease",
+                    ":hover": {
+                      bgcolor: "transparent",
+                      color: "#E1E1E1",
+                      border: "1px solid #F7F7F7",
+                    },
+                  }}
+                  endIcon={<IoIosLogIn />}
+                >
+                  Login
+                </Button>
+              </Box>
+            </form>
           </Box>
-        </form>
-      </Box>
-    </Box>
+        </Box>
+      </Box >
+    </>
   );
 };
 

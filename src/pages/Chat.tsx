@@ -1,7 +1,7 @@
-import  { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Box, Avatar, Typography, Button, IconButton , useMediaQuery , useTheme, Theme} from "@mui/material";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Box, IconButton, useMediaQuery, useTheme, Theme, AppBar, Toolbar, Typography, Drawer, Button, Link } from "@mui/material";
 import ChatItem from "../components/chat/ChatItem";
-import { IoMdSend } from "react-icons/io";
+import { IoMdMenu, IoMdSend } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import {
   deleteUserChats,
@@ -10,6 +10,9 @@ import {
 } from "../helpers/api-communicator";
 import toast from "react-hot-toast";
 import { useAuth } from "../contexts/AuthContext";
+import NavigationLink from "../components/shared/NavigationLink";
+import Logo from "../components/shared/Logo";
+import { FaImage } from "react-icons/fa";
 type Message = {
   role: "user" | "model";
   content: string;
@@ -21,9 +24,14 @@ const Chat = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const auth = useAuth();
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+
 
   const handleSubmit = async () => {
-    const content = inputRef.current?.value as string;
+    const content = inputRef.current?.value.trim() as string;
+    if (!content) return; // Prevent empty messages
+
     if (inputRef && inputRef.current) {
       inputRef.current.value = "";
     }
@@ -58,138 +66,251 @@ const Chat = () => {
         });
     }
   }, [auth]);
+
   useEffect(() => {
     if (!auth?.user) {
       return navigate("/login");
     }
   }, [auth]);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: "smooth", // Smooth scrolling effect
+      });
+    }
+  }, [chatMessages]); // Trigger effect when chatMessages updates
+
   return (
     <Box
       sx={{
         display: "flex",
         flex: 1,
-        width: "100%",
-        height: "100%",
-        mt: 3,
-        gap: 3,
+        flexDirection: "column",
+        gap: 1,
+        height: "100vh",
+        width: "100vw",
       }}
     >
-      <Box
-        sx={{
-          display: { md: "flex", xs: "none", sm: "none" },
-          flex: 0.2,
-          flexDirection: "column",
-        }}
+      <AppBar sx={{ bgcolor: "transparent", position: "static", boxShadow: "none" }}>
+        <Toolbar sx={{ display: "flex", px: isMobile ? 1 : 3 }}>
+          <Logo />
+          <div>
+            {auth?.isLoggedIn ? <>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={() => setIsDrawerOpen(true)}
+              >
+                <IoMdMenu />
+              </IconButton>
+              <NavigationLink to="/" text="Logout" onClick={auth?.logout}>
+              </NavigationLink>
+            </> : <>
+              <NavigationLink to="/login" text="Login" >
+              </NavigationLink>
+              <NavigationLink to="/signup" text="Signup" >
+              </NavigationLink>
+            </>}
+          </div>
+        </Toolbar>
+      </AppBar>
+
+      {/* Sidebar Toolbar */}
+      <Drawer
+        sx={{ "& .MuiDrawer-paper": { bgcolor: "#171719" } }} // Dark but slightly lighter than black
+        anchor="left"
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
       >
         <Box
           sx={{
+            width: 250,
+            p: 2,
             display: "flex",
-            width: "100%",
-            height: "60vh",
-            bgcolor: "rgb(17,29,39)",
-            borderRadius: 5,
             flexDirection: "column",
-            mx: 3,
-            background:"#3B3B3B",
+            alignItems: "center",
+            color: "white",
           }}
         >
-          <Avatar
-            sx={{
-              mx: "auto",
-              my: 2,
-              bgcolor: "white",
-              color: "black",
-              fontWeight: 700,
-            }}
-          >
-            {auth?.user?.name[0]}
-            {auth?.user?.name.split(" ")[1][0]}
-          </Avatar>
-          <Typography sx={{ mx: "auto", fontFamily: "work sans" }}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
             You are talking to a ChatBOT
           </Typography>
-          <Typography sx={{ mx: "auto", fontFamily: "work sans", my: 4, p: 3 }}>
-            This is a mern stack AI saas application project built with google gemini pro.
+          <Typography variant="body2" sx={{ textAlign: "center", mb: 3 }}>
+            This is a chatbot project developed with Gemini Pro API
           </Typography>
           <Button
             onClick={handleDeleteChats}
             sx={{
-              width: "200px",
-              my: "auto",
-              color: "#3B3B3B",
+              bgcolor: "#F7F7F7",
+              color: "#1E1E1E",
               fontWeight: "700",
               borderRadius: 3,
-              mx: "auto",
-              bgcolor: "#F7F7F7",
-              transition:"all 0.5s ease",
+              width: "100%",
+              transition: "all 0.3s ease",
               ":hover": {
                 bgcolor: "#3B3B3B",
                 color: "#F7F7F7",
-                border:"1px solid #F7F7F7"
+                border: "1px solid #F7F7F7",
               },
             }}
           >
             Clear Conversation
           </Button>
         </Box>
-      </Box>
+      </Drawer>
+
+      {/* Chat box */}
+
       <Box
         sx={{
           display: "flex",
-          flex: { md: 0.8, xs: 1, sm: 1 },
           flexDirection: "column",
-          px: isMobile? 1 : 3,
+          alignItems: "center",
+          px: isMobile ? 1 : 3,
         }}
       >
-
+        {/* Chat Messages Container */}
         <Box
+          ref={chatContainerRef}
           sx={{
-            width: "100%",
+            width: "100%", // Full width on mobile
+            maxWidth: "750px", // Max width on larger screens
             height: "80vh",
             borderRadius: 3,
-            mx: "auto",
             display: "flex",
             flexDirection: "column",
-            overflow: "scroll",
-            overflowX: "hidden",
+            gap: 3,
             overflowY: "auto",
+            overflowX: "hidden",
             scrollBehavior: "smooth",
+            scrollbarWidth: "none",
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
           }}
         >
-          {chatMessages.map((chat, index) => (
-            //@ts-ignore
-            <ChatItem content={chat.content} role={chat.role} key={index} />
-          ))}
+          {chatMessages.length === 0 ? (
+            <Typography variant="h6" color="gray" textAlign="center" marginTop={25}>
+              This is an AI chatbot website developed with MERN stack using Material-UI and Gemini 2.0 Flash API.
+              The source code is available at{" "}
+              <Link
+                href="https://github.com/HemantBatra873/agraser_backend" // Replace with your actual GitHub link
+                target="_blank"
+                rel="noopener noreferrer"
+                color="white"
+                underline="hover"
+              >
+                GitHub
+              </Link>.
+              You can contact{" "}
+              <Link
+                href="https://www.linkedin.com/in/hemantbatra43/" // Replace with your email or contact page
+                color="white"
+                target="_blank"
+                rel="noopener noreferrer"
+                underline="hover"
+              >
+                me
+              </Link>{" "}
+              for more information about the project.
+            </Typography>
+          ) : (
+            chatMessages.map((chat, index) => (
+              //@ts-ignore
+              <ChatItem content={chat.content} role={chat.role} key={index} />
+            ))
+          )}
         </Box>
-        <div
-          style={{
-            width: "100%",
-            borderRadius: 10,
-            backgroundColor: "#3B3B3B",
+
+        {/* Input Box */}
+        <Box
+          sx={{
+            position: "fixed",  // Fix at the bottom of the screen
+            bottom: 0,
+            right: 0,
+            left: 0,
+            width: "90%",
+            maxWidth: "750px", // Controls max width on larger screens
+            mx: "auto", // Centers it horizontally
             display: "flex",
-            margin: "auto",
+            flexDirection: "column",
+            alignItems: "center",
+            paddingBottom: isMobile ? 1 : 2,
           }}
         >
-          {" "}
-          <input
-            ref={inputRef}
-            type="text"
-            style={{
-              width: "100%",
-              backgroundColor: "#3B3B3B",
-              padding: "30px",
-              border: "none",
-              outline: "none",
-              color: "white",
-              fontSize: "25px",
-              borderRadius: 10,
+          {/* Input and Buttons Container */}
+          <Box
+            sx={{
+              width: "100%", // Full width on mobile
+              maxWidth: "750px", // Max width for large screens
+              borderRadius: 12,
+              border: "1px solid grey",
+              backgroundColor: "#171719",
+              display: "flex",
+              alignItems: "center",
             }}
-          />
-          <IconButton onClick={handleSubmit} sx={{ color: "white", mx: 1 }}>
-            <IoMdSend />
-          </IconButton>
-        </div>
+          >
+            <IconButton sx={{
+              color: "grey", mx: 1, transition: "color 0.3s ease", // Smooth transition effect
+              ":hover": {
+                color: "white", // Change color to white on hover
+              },
+            }}>
+              <FaImage />
+            </IconButton>
+
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder="Ask Cooperative"
+              style={{
+                width: "100%",
+                fontWeight: "400",
+                backgroundColor: "#171719",
+                padding: "18px",
+                paddingLeft: "0px",
+                paddingRight: "0px",
+                border: "none",
+                outline: "none",
+                color: "white",
+                fontSize: isMobile ? "16px" : "16px",
+                borderRadius: "12px",
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault(); // Prevents adding a new line in input
+                  handleSubmit();
+                }
+              }}
+            />
+            <IconButton onClick={handleSubmit} sx={{
+              color: "grey", mx: 1, transition: "color 0.3s ease", // Smooth transition effect
+              ":hover": {
+                color: "white", // Change color to white on hover
+              },
+            }}>
+              <IoMdSend />
+            </IconButton>
+          </Box>
+
+          {/* Warning Message */}
+          <Typography
+            variant="body2"
+            color="gray"
+            fontSize="13px"
+            textAlign="center"
+            sx={{ marginTop: 1 }}
+          >
+            Cooperative can make mistakes, so double-check it.
+          </Typography>
+        </Box>
+
       </Box>
+
+
     </Box>
   );
 };
