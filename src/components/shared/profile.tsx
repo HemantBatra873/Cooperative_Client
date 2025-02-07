@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Avatar, Box, Button, ClickAwayListener, Paper, Popper, Typography } from "@mui/material";
 import { useAuth } from "../../contexts/AuthContext";
-import NavigationLink from "./NavigationLink";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
