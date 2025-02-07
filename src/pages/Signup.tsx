@@ -3,7 +3,7 @@ import { IoIosLogIn } from "react-icons/io";
 import { Box, Typography, Button, useMediaQuery, useTheme, Theme } from "@mui/material";
 import CustomizedInput from "../components/shared/CustomizedInput";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import Header from "../components/Header";
 import video from '/video.mp4';
@@ -133,6 +133,23 @@ const Signup = () => {
               >
                 Signup
               </Button>
+              <Typography
+                variant="body2"
+                color="grey"
+                mt={2}
+                textAlign="center"
+              >
+                Already have an account?{" "}
+                <Link
+                  to="/login"
+                  style={{
+                    color: 'white',
+                    textDecoration: 'none', // Remove default underline
+                  }}
+                >
+                  Login
+                </Link>
+              </Typography>
             </Box>
           </form>
         </Box>

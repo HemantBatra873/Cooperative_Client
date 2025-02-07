@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import CustomizedInput from "../components/shared/CustomizedInput";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import Header from "../components/Header";
 import video from '/video.mp4';
@@ -142,6 +142,24 @@ const Login = () => {
                 >
                   Login
                 </Button>
+                {/* Added Typography for new users */}
+                <Typography
+                  variant="body2"
+                  color="grey"
+                  mt={2}
+                  textAlign="center"
+                >
+                  Don't have an account?{" "}
+                  <Link
+                    to="/signup"
+                    style={{
+                      color: 'white',
+                      textDecoration: 'none', // Remove default underline
+                    }}
+                  >
+                    Signup
+                  </Link>
+                </Typography>
               </Box>
             </form>
           </Box>

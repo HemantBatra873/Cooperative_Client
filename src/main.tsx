@@ -7,7 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
-axios.defaults.baseURL = "https://agraser-backend.vercel.app/api/v1/";
+axios.defaults.baseURL = "https://cooperative-backend.vercel.app/api/v1/";
 axios.defaults.withCredentials = true;
 const theme = createTheme({
   typography: {

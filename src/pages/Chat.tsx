@@ -10,9 +10,9 @@ import {
 } from "../helpers/api-communicator";
 import toast from "react-hot-toast";
 import { useAuth } from "../contexts/AuthContext";
-import NavigationLink from "../components/shared/NavigationLink";
 import Logo from "../components/shared/Logo";
 import { FaImage } from "react-icons/fa";
+import Profile from "../components/shared/profile";
 type Message = {
   role: "user" | "model";
   content: string;
@@ -94,10 +94,10 @@ const Chat = () => {
       }}
     >
       <AppBar sx={{ bgcolor: "transparent", position: "static", boxShadow: "none" }}>
-        <Toolbar sx={{ display: "flex", px: isMobile ? 1 : 3 }}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Logo />
           <div>
-            {auth?.isLoggedIn ? <>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <IconButton
                 edge="start"
                 color="inherit"
@@ -106,14 +106,8 @@ const Chat = () => {
               >
                 <IoMdMenu />
               </IconButton>
-              <NavigationLink to="/" text="Logout" onClick={auth?.logout}>
-              </NavigationLink>
-            </> : <>
-              <NavigationLink to="/login" text="Login" >
-              </NavigationLink>
-              <NavigationLink to="/signup" text="Signup" >
-              </NavigationLink>
-            </>}
+              <Profile />
+            </Box>
           </div>
         </Toolbar>
       </AppBar>
@@ -169,6 +163,7 @@ const Chat = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          gap: "10px",
           px: isMobile ? 1 : 3,
         }}
       >
@@ -178,7 +173,7 @@ const Chat = () => {
           sx={{
             width: "100%", // Full width on mobile
             maxWidth: "750px", // Max width on larger screens
-            height: "80vh",
+            height: "80vh", // Full height on mobile
             borderRadius: 3,
             display: "flex",
             flexDirection: "column",
@@ -226,86 +221,83 @@ const Chat = () => {
         </Box>
 
         {/* Input Box */}
-        <Box
-          sx={{
-            position: "fixed",  // Fix at the bottom of the screen
-            bottom: 0,
-            right: 0,
-            left: 0,
-            width: "90%",
-            maxWidth: "750px", // Controls max width on larger screens
-            mx: "auto", // Centers it horizontally
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            paddingBottom: isMobile ? 1 : 2,
-          }}
-        >
-          {/* Input and Buttons Container */}
+        <Box sx={{ bgcolor: "black", width: "100%", position: "fixed", bottom: 0, paddingY: '7px' }}>
           <Box
             sx={{
-              width: "100%", // Full width on mobile
-              maxWidth: "750px", // Max width for large screens
-              borderRadius: 12,
-              border: "1px solid grey",
-              backgroundColor: "#171719",
+              width: "90%",
+              maxWidth: "750px", // Controls max width on larger screens
+              mx: "auto", // Centers it horizontally
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
             }}
           >
-            <IconButton sx={{
-              color: "grey", mx: 1, transition: "color 0.3s ease", // Smooth transition effect
-              ":hover": {
-                color: "white", // Change color to white on hover
-              },
-            }}>
-              <FaImage />
-            </IconButton>
-
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder="Ask Cooperative"
-              style={{
-                width: "100%",
-                fontWeight: "400",
+            {/* Input and Buttons Container */}
+            <Box
+              sx={{
+                width: "100%", // Full width on mobile
+                maxWidth: "750px", // Max width for large screens
+                borderRadius: 12,
+                border: "1px solid grey",
                 backgroundColor: "#171719",
-                padding: "18px",
-                paddingLeft: "0px",
-                paddingRight: "0px",
-                border: "none",
-                outline: "none",
-                color: "white",
-                fontSize: isMobile ? "16px" : "16px",
-                borderRadius: "12px",
+                display: "flex",
+                alignItems: "center",
               }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault(); // Prevents adding a new line in input
-                  handleSubmit();
-                }
-              }}
-            />
-            <IconButton onClick={handleSubmit} sx={{
-              color: "grey", mx: 1, transition: "color 0.3s ease", // Smooth transition effect
-              ":hover": {
-                color: "white", // Change color to white on hover
-              },
-            }}>
-              <IoMdSend />
-            </IconButton>
-          </Box>
+            >
+              <IconButton sx={{
+                color: "grey", mx: 1, transition: "color 0.3s ease", // Smooth transition effect
+                ":hover": {
+                  color: "white", // Change color to white on hover
+                },
+              }}>
+                <FaImage />
+              </IconButton>
 
-          {/* Warning Message */}
-          <Typography
-            variant="body2"
-            color="gray"
-            fontSize="13px"
-            textAlign="center"
-            sx={{ marginTop: 1 }}
-          >
-            Cooperative can make mistakes, so double-check it.
-          </Typography>
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder="Ask Cooperative"
+                style={{
+                  width: "100%",
+                  fontWeight: "400",
+                  backgroundColor: "#171719",
+                  padding: "18px",
+                  paddingLeft: "0px",
+                  paddingRight: "0px",
+                  border: "none",
+                  outline: "none",
+                  color: "white",
+                  fontSize: isMobile ? "16px" : "16px",
+                  borderRadius: "12px",
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault(); // Prevents adding a new line in input
+                    handleSubmit();
+                  }
+                }}
+              />
+              <IconButton onClick={handleSubmit} sx={{
+                color: "grey", mx: 1, transition: "color 0.3s ease", // Smooth transition effect
+                ":hover": {
+                  color: "white", // Change color to white on hover
+                },
+              }}>
+                <IoMdSend />
+              </IconButton>
+            </Box>
+
+            {/* Warning Message */}
+            <Typography
+              variant="body2"
+              color="gray"
+              fontSize="13px"
+              textAlign="center"
+              sx={{ marginTop: 1 }}
+            >
+              Cooperative can make mistakes, so double-check it.
+            </Typography>
+          </Box>
         </Box>
 
       </Box>
