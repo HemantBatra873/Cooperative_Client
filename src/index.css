@@ -71,8 +71,36 @@ code.language-javascript span {
 }
 
 pre.syntax-highlighter {
-  background-color: #3b3b3b !important;
+  background-color: #171719 !important;
   color: #f7f7f7 !important;
+}
+
+/* Hide scrollbar by default */
+.syntax-highlighter::-webkit-scrollbar {
+  width: 6px; /* Thin scrollbar */
+  height: 6px;
+}
+
+/* Track (background of scrollbar) */
+.syntax-highlighter::-webkit-scrollbar-track {
+  background: transparent; /* Or any color you prefer */
+  border-radius: 10px;
+}
+
+/* Handle (draggable part) */
+.syntax-highlighter::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4); /* Light semi-transparent scrollbar */
+  border-radius: 10px;
+}
+
+/* On hover */
+.syntax-highlighter::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.syntax-highlighter code,
+.syntax-highlighter pre {
+  font-family: "PT Sans", "Roboto Slab", serif !important;
 }
 
 .notfound {

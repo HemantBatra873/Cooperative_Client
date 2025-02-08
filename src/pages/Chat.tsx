@@ -16,6 +16,8 @@ import Profile from "../components/shared/profile";
 type Message = {
   role: "user" | "model";
   content: string;
+  loading: boolean;
+  generating: boolean;
 };
 const Chat = () => {
   const theme: Theme = useTheme();
@@ -26,20 +28,59 @@ const Chat = () => {
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
 
   const handleSubmit = async () => {
-    const content = inputRef.current?.value.trim() as string;
+    const content = inputRef.current?.value.trim();
     if (!content) return; // Prevent empty messages
 
-    if (inputRef && inputRef.current) {
+    if (inputRef.current) {
       inputRef.current.value = "";
     }
-    const newMessage: Message = { role: "user", content };
-    setChatMessages((prev) => [...prev, newMessage]);
-    const chatData = await sendChatRequest(content);
-    setChatMessages([...chatData.chats]);
+
+    // Add user message and an empty model message (to start streaming effect)
+    setIsGenerating(true);
+    setChatMessages((prev) => [
+      ...prev,
+      { role: "user", content, loading: false, generating: false },
+      { role: "model", content: "", loading: true, generating: !isGenerating }, // Initially loading is true
+    ]);
+
+    try {
+      const chatData = await sendChatRequest(content);
+      const fullResponse = chatData.chats[chatData.chats.length - 1].content;
+
+      const words = fullResponse.split(" "); // Split response into words
+      let currentIndex = 0;
+
+      const interval = setInterval(() => {
+        setChatMessages((prev) =>
+          prev.map((msg, index) => {
+            if (index === prev.length - 1) {
+              return {
+                role: "model",
+                content: words.slice(0, currentIndex + 1).join(" "), // Reveal word by word,
+                generating: isGenerating,
+                loading: currentIndex === 0, // Set loading false after the first word
+              };
+            }
+            return msg;
+          })
+        );
+
+        currentIndex++;
+
+        if (currentIndex >= words.length) {
+          clearInterval(interval);
+          setIsGenerating(false);
+        }
+      }, 1);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
 
   const handleDeleteChats = async () => {
     try {
@@ -163,8 +204,7 @@ const Chat = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "10px",
-          px: isMobile ? 1 : 3,
+          px: isMobile ? 2 : 3,
         }}
       >
         {/* Chat Messages Container */}
@@ -173,7 +213,7 @@ const Chat = () => {
           sx={{
             width: "100%", // Full width on mobile
             maxWidth: "750px", // Max width on larger screens
-            height: "80vh", // Full height on mobile
+            maxHeight: "82vh", // Full height on mobile
             borderRadius: 3,
             display: "flex",
             flexDirection: "column",
@@ -187,6 +227,7 @@ const Chat = () => {
             },
           }}
         >
+
           {chatMessages.length === 0 ? (
             <Typography variant="h6" color="gray" textAlign="center" marginTop={25}>
               This is an AI chatbot website developed with MERN stack using Material-UI and Gemini 2.0 Flash API.
@@ -215,13 +256,13 @@ const Chat = () => {
           ) : (
             chatMessages.map((chat, index) => (
               //@ts-ignore
-              <ChatItem content={chat.content} role={chat.role} key={index} />
+              <ChatItem content={chat.content} role={chat.role} generating={chat.generating} loading={chat.loading} key={index} />
             ))
           )}
         </Box>
 
         {/* Input Box */}
-        <Box sx={{ bgcolor: "black", width: "100%", position: "fixed", bottom: 0, paddingY: '7px' }}>
+        <Box sx={{ bgcolor: "black", width: "100%", position: "fixed", bottom: 0, paddingBottom: '7px' }}>
           <Box
             sx={{
               width: "90%",
@@ -242,6 +283,7 @@ const Chat = () => {
                 backgroundColor: "#171719",
                 display: "flex",
                 alignItems: "center",
+                boxShadow: "0px -30px 10px rgba(0, 0, 0, 0.4)",
               }}
             >
               <IconButton sx={{
@@ -277,7 +319,7 @@ const Chat = () => {
                   }
                 }}
               />
-              <IconButton onClick={handleSubmit} sx={{
+              <IconButton onClick={handleSubmit} disabled={isGenerating} sx={{
                 color: "grey", mx: 1, transition: "color 0.3s ease", // Smooth transition effect
                 ":hover": {
                   color: "white", // Change color to white on hover
