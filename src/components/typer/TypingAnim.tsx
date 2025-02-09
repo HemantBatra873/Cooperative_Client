@@ -9,16 +9,17 @@ const TypingAnim = () => {
     <TypeAnimation
       sequence={[
         // Same substring at the start will only be typed once, initially
-        "Chat With CooperativeAI",
-        1000,
-        "Built With Gemini 2.0 Flash",
-        1000,
-        "Fulltime assistance",
-        1000,
+        "Experience Intelligent Conversations with CooperativeAI",
+        1200,
+        "Powered by Gemini 2.0 Flash for Lightning-Fast Responses",
+        1200,
+        "Your 24/7 Smart Assistant, Always Ready to Help",
+        1200,
       ]}
       speed={50}
       style={{
-        fontSize: isMobile ? "50px" : isTab ? "60px" : '90px',
+        fontSize: isMobile ? "40px" : isTab ? "50px" : '80px',
+        width: isMobile ? "250px" : isTab ? "460px" : '690px',
         color: "white",
         fontWeight: '900',
         display: "flex",

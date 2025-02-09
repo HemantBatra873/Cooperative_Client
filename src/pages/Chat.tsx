@@ -134,7 +134,7 @@ const Chat = () => {
         width: "100vw",
       }}
     >
-      <AppBar sx={{ bgcolor: "transparent", position: "static", boxShadow: "none" }}>
+      <AppBar sx={{ bgcolor: "transparent", position: "static", boxShadow: "0px 15px 10px rgba(0, 0, 0, 0.4)", }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Logo />
           <div>
@@ -213,7 +213,7 @@ const Chat = () => {
           sx={{
             width: "100%", // Full width on mobile
             maxWidth: "750px", // Max width on larger screens
-            maxHeight: "82vh", // Full height on mobile
+            maxHeight: isMobile ? '80vh' : "82vh", // Full height on mobile
             borderRadius: 3,
             display: "flex",
             flexDirection: "column",
