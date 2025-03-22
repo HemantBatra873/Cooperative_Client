@@ -1,1 +1,1 @@
-Agraser AI frontend
+Cooperative AI 
