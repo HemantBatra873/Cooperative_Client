@@ -1,4 +1,4 @@
-# Cooperative AI Chatbot Website 🤖
+# Cooperative AI Chatbot Website 
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Material-UI](https://img.shields.io/badge/Material--UI-0081CB?style=for-the-badge&logo=material-ui&logoColor=white)
